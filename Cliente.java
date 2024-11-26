@@ -21,5 +21,17 @@ public class Cliente {
         return telefono;
     }
 
+    //setters
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+    public void setCorreo(String correo){
+        this.correo = correo;
+    }
+    public void setTelefono(String telefono){
+        this.telefono = telefono;
+    }
+
+
     
 }
