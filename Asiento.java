@@ -46,20 +46,11 @@ public class Asiento{
 }
 
 public Asiento(String seccion, int fila, int numero, TipoAsiento tipoasiento){
-
-    if (fila <= 0 || fila > tipoAsiento.getFilas()) {
-        throw new IllegalArgumentException("Fila inválida para el tipo de asiento.");
-    }
-    if (numero <= 0 || numero > tipoAsiento.getSillasPorFila()) {
-        throw new IllegalArgumentException("Número de silla inválido para el tipo de asiento.");
-    }
-
     this.seccion = seccion;
     this.fila = fila;
     this.numero = numero;
     this.reservado = false;
-    this.tipoAsiento = tipoAsiento;
-    
+    this.tipoAsiento = tipoAsiento; 
 }
 
 public TipoAsiento getTipoAsiento() {
