@@ -102,9 +102,9 @@ public class Reserva {
     private Asiento reservarHelper(String seccion){
         Set<Asiento> seccionSet;
 
-        if(seccion == "Fiel Level"){ seccionSet = fieldLevel; }
-        else if(seccion == "Main Level"){ seccionSet = mainLevel; }
-        else if(seccion == "Grandstand Level"){ seccionSet = grandstandLevel; }
+        if(seccion == "1"){ seccionSet = fieldLevel; }
+        else if(seccion == "2"){ seccionSet = mainLevel; }
+        else if(seccion == "3"){ seccionSet = grandstandLevel; }
         else { return null;}
 
         for (Asiento asiento : seccionSet) {
@@ -120,13 +120,13 @@ public class Reserva {
      * @param seccion seccion deseada por el cliente para reservar
      */
     private void listaEspera(Cliente cliente, String seccion){
-        if(seccion == "Fiel Level"){
+        if(seccion == "1"){
             listaEsperaField.add(cliente);
         }
-        else if(seccion == "Main Level"){
+        else if(seccion == "2"){
             listaEsperaMain.add(cliente);
         }
-        else if(seccion == "Grandstand Level"){
+        else if(seccion == "3"){
             listaEsperaGrandstand.add(cliente);
         }
         System.out.println("Agregado a la lista de espera.");
@@ -153,13 +153,13 @@ public class Reserva {
     private void moverDeListaEspera() {
         if (!listaEsperaField.isEmpty()) {
             Cliente cliente = listaEsperaField.poll();
-            reservar(cliente, "Field Level");
+            reservar(cliente, "1");
         } else if (!listaEsperaMain.isEmpty()) {
             Cliente cliente = listaEsperaMain.poll();
-            reservar(cliente, "Main Level");
+            reservar(cliente, "2");
         } else if (!listaEsperaGrandstand.isEmpty()) {
             Cliente cliente = listaEsperaGrandstand.poll();
-            reservar(cliente, "Grandstand Level");
+            reservar(cliente, "3");
         }
     }
 }
