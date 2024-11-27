@@ -1,5 +1,10 @@
 import java.util.*;
 
+/**
+ * La clase Reserva administra las reservas de asientos del estadio. 
+ * Incluye funcionalidades para inicializar asientos, gestionar disponibilidad, 
+ * realizar reservas, cancelar reservas y manejar listas de espera.
+ */
 public class Reserva {
     private Set<Asiento> fieldLevel;
     private Set<Asiento> mainLevel;
@@ -12,6 +17,9 @@ public class Reserva {
     private HashMap<Cliente, Asiento> reservaciones;
     private LinkedList<String> historial;
 
+    /**
+     * Constructor de la clase de reserva.
+     */
     public Reserva(){
         this.listaEsperaField = new LinkedList<>();
         this.listaEsperaMain = new LinkedList<>();
@@ -28,6 +36,11 @@ public class Reserva {
         inicializarAsientos(this.grandstandLevel, Asiento.TipoAsiento.GRANDSTAND_LEVEL);
     }
 
+    /**
+     * Inicia los Asientos de una seccion.
+     * @param seccion seccion de sillas
+     * @param tipo tipo de asiento de la seccion
+     */
     private void inicializarAsientos(Set<Asiento> seccion, Asiento.TipoAsiento tipo) {
         for (int fila = 1; fila <= tipo.getFilas(); fila++) {
             for (int numero = 1; numero <= tipo.getSillasPorFila(); numero++) {
@@ -36,12 +49,21 @@ public class Reserva {
         }
     }
 
+    /**
+     * Muestra la disponibilidad de asientos.
+     */
     public void disponibilidad(){
         System.out.println("Disponibilidad de Asientos por Secciones: ");
         System.out.println("Field -> " + disponibilidadHelper(fieldLevel));
         System.out.println("Main -> " + disponibilidadHelper(mainLevel));
         System.out.println("Grandstand -> " + disponibilidadHelper(grandstandLevel));
     }
+
+    /**
+     * Cuenta la cantidad de sillas disponibles.
+     * @param asientos asientos de la seccion
+     * @return  devuelve el numero de asientos disponibles
+     */
     private int disponibilidadHelper(Set<Asiento> asientos){
         int count = 0;
 
@@ -52,6 +74,11 @@ public class Reserva {
         return count;
     }
 
+/**
+ * Realiza una reservacion para un cliende de su seccion deseada.
+ * @param cliente cliente reservando una silla
+ * @param seccion seccion de la silla a reservar
+ */
     public void reservar(Cliente cliente, String seccion){
         Asiento asiento = reservarHelper(seccion);
 
@@ -66,6 +93,12 @@ public class Reserva {
             listaEspera(cliente, seccion);
         }
     }
+
+    /**
+     * Encuentra un asiento en una seccion para reservar.
+     * @param seccion seccion donde se va a reservar una silla
+     * @return devuelve un asiento disponible, null si no hay espacio
+     */
     private Asiento reservarHelper(String seccion){
         Set<Asiento> seccionSet;
 
@@ -81,6 +114,11 @@ public class Reserva {
         return null;
     }
 
+    /**
+     * Anade un cliente a la lista de espera a su seccion deseada.
+     * @param cliente cliente reservando la silla
+     * @param seccion seccion deseada por el cliente para reservar
+     */
     private void listaEspera(Cliente cliente, String seccion){
         if(seccion == "Fiel Level"){
             listaEsperaField.add(cliente);
@@ -94,6 +132,10 @@ public class Reserva {
         System.out.println("Agregado a la lista de espera.");
     }
 
+    /**
+     * Cancela la reservacion de un cliente y mueve un cliente de la lista de espera si aplica.
+     * @param cliente cliente que quiere cancelar su reservacion
+     */
     public void cancelarReservacion(Cliente cliente) {
         Asiento asiento = reservaciones.remove(cliente);
 
@@ -105,6 +147,9 @@ public class Reserva {
         }
     }
 
+    /**
+     * Mueve el primer cliente en la lista de espera a un asiento si es posible.
+     */
     private void moverDeListaEspera() {
         if (!listaEsperaField.isEmpty()) {
             Cliente cliente = listaEsperaField.poll();

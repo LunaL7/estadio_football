@@ -1,6 +1,15 @@
 import java.util.Scanner;
 
+/**
+ * Clase principal que gestiona la reservacion de una silla de un estadio.
+ * Permite ver la disponiblilidad, reservar y cancelar de las sillas
+ */
 public class Main{
+
+    /**
+     * Metodo principal que inicializa el sistema de reservaciones
+     * @param args 
+     */
     public static void main(String[] args) { // literalmente esto es chatgpt NO DEJAR ASI
         Estadio estadio = new Estadio();
         Scanner scanner = new Scanner(System.in);
@@ -17,11 +26,17 @@ public class Main{
 
         // Interacción con el sistema
         while (true) {
+            //Opciones
             System.out.println("\nOpciones:");
+            //Ver disponibilidad de asientos
             System.out.println("1. Ver disponibilidad de asientos");
+            //Hacer una reserva
             System.out.println("2. Hacer una reserva");
+            // Cancelar una reserva
             System.out.println("3. Cancelar una reserva");
+            //Salir
             System.out.println("4. Salir");
+            //Ingrese una opción
             System.out.println("Ingrese una opción: ");
             int opcion = scanner.nextInt();
             scanner.nextLine();  // Limpiar buffer
