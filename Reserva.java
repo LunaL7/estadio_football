@@ -4,6 +4,11 @@ import java.util.*;
  * La clase Reserva administra las reservas de asientos del estadio. 
  * Incluye funcionalidades para inicializar asientos, gestionar disponibilidad, 
  * realizar reservas, cancelar reservas y manejar listas de espera.
+ * 
+ * Aqui se utilizo un hash set para las diferentes secciones del estadio, fieldLevel, mainLevel, grandstandLevel.
+ * Se utilizo un linked list para la lista de espera, los clientes se agregan a la cola si no hay sillas disponibles.
+ * Se utilizo un hashmap para las reservaciones que vincula el cliente con su asiento que desea reservar.
+ * Se utilizo un linked list para el historial para poder tener una lista de los clientes atendidos.
  */
 public class Reserva {
     private Set<Asiento> fieldLevel;
