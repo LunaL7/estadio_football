@@ -19,7 +19,7 @@ public class Reserva {
     private Queue<Cliente> listaEsperaMain;
     private Queue<Cliente> listaEsperaGrandstand;
 
-    private HashMap<Cliente, Asiento> reservaciones;
+    private HashMap<Cliente, List<Asiento>> reservaciones;
     private LinkedList<String> historial;
 
     /**
@@ -89,7 +89,14 @@ public class Reserva {
 
         if(asiento != null){
             asiento.reservar();
-            reservaciones.put(cliente, asiento);
+
+            List<Asiento> reservasCliente = reservaciones.get(cliente);
+            if (reservasCliente == null) {
+                reservasCliente = new ArrayList<>();
+                reservaciones.put(cliente, reservasCliente);
+            }
+            reservasCliente.add(asiento);
+
             historial.add("Reservacion: " + cliente.getNombre() + " --> " + asiento.getSeccion() + " asiento " + asiento.getNumero());// mal hecho creo tengo que volver a leer las instrucciones
             System.out.println("Reservado exitosamente");
         }
@@ -107,9 +114,9 @@ public class Reserva {
     private Asiento reservarHelper(String seccion){
         Set<Asiento> seccionSet;
 
-        if(seccion == "1"){ seccionSet = fieldLevel; }
-        else if(seccion == "2"){ seccionSet = mainLevel; }
-        else if(seccion == "3"){ seccionSet = grandstandLevel; }
+        if(seccion.equals("1")){ seccionSet = fieldLevel; }
+        else if(seccion.equals("2")){ seccionSet = mainLevel; }
+        else if(seccion.equals("3")){ seccionSet = grandstandLevel; }
         else { return null;}
 
         for (Asiento asiento : seccionSet) {
@@ -141,14 +148,19 @@ public class Reserva {
      * Cancela la reservacion de un cliente y mueve un cliente de la lista de espera si aplica.
      * @param cliente cliente que quiere cancelar su reservacion
      */
-    public void cancelarReservacion(Cliente cliente) {
-        Asiento asiento = reservaciones.remove(cliente);
+    public void cancelarReservacion(Cliente cliente, Asiento asiento) {
+        List<Asiento> reservasCliente = reservaciones.get(cliente);
 
-        if (asiento != null) {
+        if (reservasCliente != null && reservasCliente.contains(asiento)) {
+            reservasCliente.remove(asiento);
             asiento.cancelReser();
-            historial.add("Cancelación: " + cliente.getNombre() + " canceló su reservación.");
+
+            historial.add("Cancelación: " + cliente.getNombre() + " canceló su reservación para el asiento " + asiento.getNumero());
+            System.out.println("La reservación ha sido cancelada.");
+
             moverDeListaEspera();
-            System.out.println("Reservación cancelada para " + cliente.getNombre());
+        } else {
+            System.out.println("No se encontró la reservación para el cliente en ese asiento.");
         }
     }
 
@@ -166,5 +178,16 @@ public class Reserva {
             Cliente cliente = listaEsperaGrandstand.poll();
             reservar(cliente, "3");
         }
+    }
+
+    public boolean tieneReserva(Cliente cliente){
+        if(reservaciones.containsKey(cliente)){
+            return true;
+        }
+        return false;
+    }
+
+    public List<Asiento> obtenerReservas(Cliente cliente) {
+        return reservaciones.get(cliente);
     }
 }

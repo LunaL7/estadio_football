@@ -35,7 +35,17 @@ public class Estadio{
      * Cancela la reservacion del cliente.
      * @param cliente cliente a cancelar la silla
      */
-    public void cancelarReserva(Cliente cliente){
-        reservaManager.cancelarReservacion(cliente);
+    public void cancelarReservacion(Cliente cliente, Asiento asiento) {
+        reservaManager.cancelarReservacion(cliente, asiento);
     }
+
+    public boolean tieneReserva(Cliente cliente){
+        return reservaManager.tieneReserva(cliente);
+    }
+
+    public List<Asiento> obtenerReservas(Cliente cliente) {
+        return reservaManager.obtenerReservas(cliente);
+    }
+
+
 }

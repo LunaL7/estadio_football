@@ -1,4 +1,6 @@
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Clase principal que gestiona la reservacion de una silla de un estadio.
@@ -13,26 +15,29 @@ public class Main{
     public static void main(String[] args) { // literalmente esto es chatgpt NO DEJAR ASI
         Estadio estadio = new Estadio();
         Scanner scanner = new Scanner(System.in);
-        boolean isInt = false;
-        int tele = 0;
+        boolean numeroValido = false;
+        String telefono = "";
 
         // Crear cliente
         System.out.print("Ingrese el nombre del cliente: ");
         String nombre = scanner.nextLine();
+
         System.out.print("Ingrese el correo del cliente: ");
         String correo = scanner.nextLine();
-        while(!isInt){ //while loop asegura que entres un numero
+
+        while(!numeroValido){ //while loop asegura que entres un numero
             System.out.print("Ingrese el teléfono del cliente: ");
-            String next = scanner.nextLine();
-            try{
-                tele = Integer.parseInt(next);
-                isInt = true;
-            } catch(NumberFormatException e){
+            telefono = scanner.nextLine();
+
+            if(Pattern.matches("\\d{10}", telefono)){
+                numeroValido = true;
+            } 
+            else{
                 System.out.println("Telefono invalido. Ingrese un numero de telefono valido");
             }
         }
         
-        Cliente cliente = new Cliente(nombre, correo, String.valueOf(tele));
+        Cliente cliente = new Cliente(nombre, correo, telefono);
 
         // Interacción con el sistema
         while (true) {
@@ -44,8 +49,10 @@ public class Main{
             System.out.println("2. Hacer una reserva");
             // Cancelar una reserva
             System.out.println("3. Cancelar una reserva");
+            //ver reservas
+            System.out.println("4. Ver reservas");
             //Salir
-            System.out.println("4. Salir");
+            System.out.println("5. Salir");
             //Ingrese una opción
             System.out.println("Ingrese una opción: ");
             String opcion = scanner.next();
@@ -61,9 +68,39 @@ public class Main{
                     estadio.hacerReserva(cliente, seccion);
                     break;
                 case "3":
-                    estadio.cancelarReserva(cliente);
+                    if(estadio.tieneReserva(cliente)){
+                        System.out.println("Cual deseas cancelar?");
+                        List<Asiento> reservasCliente = estadio.obtenerReservas(cliente);
+
+                        for (int i = 0; i < reservasCliente.size(); i++) {
+                            Asiento asiento = reservasCliente.get(i);
+                            System.out.println((i + 1) + ". Sección: " + asiento.getSeccion() + ", Asiento: " + asiento.getNumero());
+                        }
+
+                        System.out.println("Ingresa el número de la reserva que deseas cancelar: ");
+                        int seleccion = scanner.nextInt();
+
+                        if (seleccion > 0 && seleccion <= reservasCliente.size()) {
+                            Asiento asientoSeleccionado = reservasCliente.get(seleccion - 1);
+                            estadio.cancelarReservacion(cliente, asientoSeleccionado);
+                        }
+                        else{
+                            System.out.println("Seleccion Invalida");
+                        }
+                    }
                     break;
                 case "4":
+                    List<Asiento> reservas = estadio.obtenerReservas(cliente);
+                    if (reservas == null || reservas.isEmpty()) {
+                        System.out.println("No tienes reservas.");
+                    } else {
+                        System.out.println("Tus reservas actuales son:");
+                        for (Asiento asiento : reservas) {
+                            System.out.println("Sección: " + asiento.getSeccion() + ", Fila: " + asiento.getFila() + ", Asiento: " + asiento.getNumero());
+                        }
+                    }
+                    break;
+                case "5":
                     System.out.println("¡Gracias por usar el sistema!");
                     scanner.close();
                     return;
