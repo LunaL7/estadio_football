@@ -66,6 +66,9 @@ public class Main{
                     System.out.print("Ingrese la sección para reservar (1 - Field Level, 2 - Main Level, 3 - Grandstand Level): ");
                     String seccion = scanner.nextLine();
                     estadio.hacerReserva(cliente, seccion);
+            
+                    int totalCost = estadio.calcularCostoTotal(cliente);
+                    System.out.println("El costo total de la(s) reserva(s) es: $" + totalCost);
                     break;
                 case "3":
                     if(estadio.tieneReserva(cliente)){
@@ -90,14 +93,18 @@ public class Main{
                     }
                     break;
                 case "4":
-                    List<Asiento> reservas = estadio.obtenerReservas(cliente);
-                    if (reservas == null || reservas.isEmpty()) {
-                        System.out.println("No tienes reservas.");
-                    } else {
+                    if (estadio.tieneReserva(cliente)) {
+                        List<Asiento> reservasCliente = estadio.obtenerReservas(cliente);
                         System.out.println("Tus reservas actuales son:");
-                        for (Asiento asiento : reservas) {
+                        for (Asiento asiento : reservasCliente) {
                             System.out.println("Sección: " + asiento.getSeccion() + ", Fila: " + asiento.getFila() + ", Asiento: " + asiento.getNumero());
                         }
+            
+                        int totalCostReservations = estadio.calcularCostoTotal(cliente);
+                        System.out.println("El costo total de todas tus reservas es: $" + totalCostReservations);
+                    } 
+                    else {
+                        System.out.println("No tienes reservas.");
                     }
                     break;
                 case "5":

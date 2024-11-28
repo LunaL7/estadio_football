@@ -49,7 +49,8 @@ public class Reserva {
     private void inicializarAsientos(Set<Asiento> seccion, Asiento.TipoAsiento tipo) {
         for (int fila = 1; fila <= tipo.getFilas(); fila++) {
             for (int numero = 1; numero <= tipo.getSillasPorFila(); numero++) {
-                seccion.add(new Asiento(tipo.getNombre(), fila, numero, tipo));
+                Asiento asiento = new Asiento(tipo.getNombre(), fila, numero);
+                seccion.add(asiento);
             }
         }
     }
@@ -189,5 +190,26 @@ public class Reserva {
 
     public List<Asiento> obtenerReservas(Cliente cliente) {
         return reservaciones.get(cliente);
+    }
+
+    public int calcularCostoTotal(Cliente cliente) {
+        List<Asiento> reservasCliente = reservaciones.get(cliente);
+        int total = 0;
+
+        if (reservasCliente != null) {
+            for (Asiento asiento : reservasCliente) {
+                if(asiento.getSeccion().equals("Field Level")){
+                    total += 300;
+                }
+                if(asiento.getSeccion().equals("Main Level")){
+                    total += 120;
+                }
+                if(asiento.getSeccion().equals("Grandstand Level")) {
+                    total += 45;
+                }
+            }
+        }
+
+        return total;
     }
 }

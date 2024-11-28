@@ -47,5 +47,7 @@ public class Estadio{
         return reservaManager.obtenerReservas(cliente);
     }
 
-
+    public int calcularCostoTotal(Cliente cliente) {
+        return reservaManager.calcularCostoTotal(cliente);
+    }
 }

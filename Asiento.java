@@ -8,6 +8,7 @@ public class Asiento{
  private int numero;             //numero de silla
  private boolean reservado;      //estatus de la reservacion 
  private TipoAsiento tipoAsiento;// indica donde esta localizado la silla
+ private int costo;
 
  /**
   * Enum que representa la seccion del asiento.
@@ -84,12 +85,19 @@ public class Asiento{
  * @param numero numero de la silla
  * @param tipoasiento tipo de silla
  */
-public Asiento(String seccion, int fila, int numero, TipoAsiento tipoasiento){
+public Asiento(String seccion, int fila, int numero){
     this.seccion = seccion;         //seccion donde esta la silla
     this.fila = fila;               //numero de fila para la silla
     this.numero = numero;           //numero de la silla
     this.reservado = false;         //estatus de la reservacion
-    this.tipoAsiento = tipoAsiento; //tipo de silla
+
+    if ("Field".equals(seccion)) {
+        this.costo = 300; // Field section 
+    } else if ("Main".equals(seccion)) {
+        this.costo = 120; // Main section 
+    } else if ("Grandstand".equals(seccion)) {
+        this.costo = 45;  // Grandstand section 
+    }
 }
 
 /**
@@ -176,5 +184,8 @@ public String toString(){
     return "Seccion" + getSeccion() + "fila" + getFila() + "asiento" + getNumero();
 }
 
+public int getCosto() {
+    return costo;
+}
 
 }
